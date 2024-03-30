@@ -10,7 +10,7 @@ class Api::V1::NewbooksController < ApplicationController
     def popularity
         page = params[:page] || 1
         per = params[:per] || 10
-        @popularity_books = RakutenWebService::Books::Book.search(booksGenreId: "001005017",reviewAverage: "5", page: page, hits: per)
+        @popularity_books = RakutenWebService::Books::Book.search(booksGenreId: "001005017",sort:"reviewAverage" , page: page, hits: per)
         render json: { status: 'success', data: @popularity_books }
     end
 

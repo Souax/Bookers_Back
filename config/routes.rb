@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       post 'auth/google/callback', to: 'users#create'
-      resources :users, param: :email, only: [:update, :destroy], constraints: { email: %r{[^/]+} }
+      resources :users, param: :email, only: [:show, :update, :destroy], constraints: { email: %r{[^/]+} }
       get '/search', to: 'books#search'
       get '/base', to: 'books#base'
       get '/design', to: 'books#css'

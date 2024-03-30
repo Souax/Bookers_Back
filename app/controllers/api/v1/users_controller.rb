@@ -11,6 +11,19 @@ class Api::V1::UsersController < ApplicationController
       render json: { error: e.message }, status: :internal_server_error
     end
 
+
+    def update
+      user = User.find_by(email: params[:email])
+      if user
+        user.update(name: params[:name])
+        head :ok
+      else
+        render json: { error: "ユーザーが見つかりませんでした" }, status: :not_found
+      end
+    rescue StandardError => e
+      render json: { error: e.message }, status: :internal_server_error
+    end
+
     def destroy
       user = User.find_by(email: params[:email])
       if user
@@ -21,4 +34,10 @@ class Api::V1::UsersController < ApplicationController
     rescue StandardError => e
       render json: { error: e.message }, status: :internal_server_error
     end
+
+    private
+
+      def user_params
+        params.require(:user).permit(:name, :image)
+      end
 end

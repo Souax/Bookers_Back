@@ -3,14 +3,14 @@ class Api::V1::NewbooksController < ApplicationController
     def newbook
         page = params[:page] || 1
         per = params[:per] || 5
-        @new_books = RakutenWebService::Books::Book.search(salesDate: "2024年", booksGenreId: "001005017", page: page, hits: per)
+        @new_books = RakutenWebService::Books::Book.search(booksGenreId: "001005017",salesDate: "2024年",  page: page, hits: per)
         render json: { status: 'success', data: @new_books }
     end
 
     def popularity
         page = params[:page] || 1
         per = params[:per] || 10
-        @popularity_books = RakutenWebService::Books::Book.search(title: "プロを目指す人のためのTypeScript入門　安全なコードの書き方から高度な型の使い方まで", page: page, hits: per)
+        @popularity_books = RakutenWebService::Books::Book.search(booksGenreId: "001005017",reviewAverage: "5", page: page, hits: per)
         render json: { status: 'success', data: @popularity_books }
     end
 

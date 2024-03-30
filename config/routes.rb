@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
+      post 'auth/google/callback', to: 'users#create'
+      resources :users, param: :email, only: [:update, :destroy], constraints: { email: %r{[^/]+} }
       get '/search', to: 'books#search'
       get '/base', to: 'books#base'
       get '/design', to: 'books#css'
@@ -28,9 +30,6 @@ Rails.application.routes.draw do
       get 'newbook', to: 'newbooks#newbook'
       get 'popularity', to: 'newbooks#popularity'
       get 'recommendation', to: 'newbooks#recommendation'
-      post 'auth/google/callback', to: 'users#create'
-      delete 'users/:email', to: 'users#destroy', constraints: { email: %r{[^/]+} }
-
     end
   end
 end

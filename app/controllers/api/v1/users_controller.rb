@@ -1,10 +1,6 @@
 class Api::V1::UsersController < ApplicationController
   
   
-    def show
-      render json: current_user
-    end 
-
 
     def create
         user = User.find_or_create_by(provider: params[:provider], uid: params[:uid], name: params[:name], email: params[:email])
@@ -20,14 +16,20 @@ class Api::V1::UsersController < ApplicationController
 
     def update
       user = User.find_by(email: params[:email])
+      p user
       if user
-        user.update(user_params)
-        head :ok
+        if user.update(user_params)
+          head :ok
+          p "アップデートされました"
+        else
+          render json: { error: "アップデートされませんでした" }, status: :internal_server_error
+          p "アップデートされませんでした"
+        end
       else
         render json: { error: "ユーザーが見つかりませんでした" }, status: :not_found
       end
-    rescue StandardError => e
-      render json: { error: e.message }, status: :internal_server_error
+    #rescue StandardError => e
+      #render json: { error: e.message }, status: :internal_server_error
     end
 
     def destroy
